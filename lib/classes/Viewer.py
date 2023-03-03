@@ -4,18 +4,27 @@ from classes.Review import Review
 class Viewer:
 
     def __init__(self, username):
-        pass
+        self.username = username
 
-    # username property goes here!
+    def get_username(self):
+        return self._username  
+    
+    def set_username(self, username):
+        if isinstance(username, str) and (6 <= len(username) <= 16):
+            self._username = username
+        else:
+            print("Invalid username")
+
+    username = property(get_username, set_username)
 
     def reviews(self):
-        pass
+        return [review for review in Review.all if review.viewer == self]
 
     def reviewed_movies(self):
-        pass
+        return [review.movie for review in self.reviews()]
 
     def movie_reviewed(self, movie):
-        pass
+        return any(review.movie == movie for review in self.reviews())
 
     def rate_movie(self, movie, rating):
-        pass
+        Review(self, movie, rating)
